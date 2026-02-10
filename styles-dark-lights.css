@@ -1,4 +1,4 @@
-/* Estilos oscuros con luces azules animadas */
+/* Estilos oscuros con luces azules animadas - CORREGIDO */
 
 :root {
   --primary-blue: #6366f1;
@@ -14,15 +14,22 @@
   box-sizing: border-box;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+  background: #0a0a14;
   color: #e0e0e0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   position: relative;
 }
 
-/* Fondo con luces animadas */
+/* Fondo base oscuro */
 body::before {
   content: '';
   position: fixed;
@@ -30,84 +37,133 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.12) 0%, transparent 50%);
-  animation: lightMove 15s ease-in-out infinite;
-  pointer-events: none;
+  background: linear-gradient(135deg, #0a0a14 0%, #0f0f1e 50%, #0a0a14 100%);
   z-index: 0;
+  pointer-events: none;
 }
 
-@keyframes lightMove {
+/* Luces azules animadas - PRIMERA LUZ */
+body::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(129, 140, 248, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 50% 20%, rgba(79, 70, 229, 0.2) 0%, transparent 40%);
+  animation: lightMove1 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(40px);
+}
+
+@keyframes lightMove1 {
   0% {
     background: 
-      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.12) 0%, transparent 50%);
+      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.2) 0%, transparent 40%),
+      radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.2) 0%, transparent 40%);
+  }
+  25% {
+    background: 
+      radial-gradient(circle at 40% 30%, rgba(99, 102, 241, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 60% 70%, rgba(129, 140, 248, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.2) 0%, transparent 40%);
   }
   50% {
     background: 
-      radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(129, 140, 248, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 50% 30%, rgba(79, 70, 229, 0.15) 0%, transparent 50%);
+      radial-gradient(circle at 60% 40%, rgba(99, 102, 241, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 40% 60%, rgba(129, 140, 248, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 70% 30%, rgba(79, 70, 229, 0.25) 0%, transparent 40%);
+  }
+  75% {
+    background: 
+      radial-gradient(circle at 30% 60%, rgba(99, 102, 241, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 70% 40%, rgba(129, 140, 248, 0.2) 0%, transparent 40%),
+      radial-gradient(circle at 40% 70%, rgba(79, 70, 229, 0.25) 0%, transparent 40%);
   }
   100% {
     background: 
-      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.12) 0%, transparent 50%);
+      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.2) 0%, transparent 40%),
+      radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.2) 0%, transparent 40%);
   }
 }
 
 /* Huecos negros pequeños decorativos */
 .light-hole {
   position: fixed;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 .hole-1 {
-  width: 120px;
-  height: 120px;
-  top: 15%;
-  left: 10%;
-  animation: holeFloat 8s ease-in-out infinite;
+  width: 150px;
+  height: 150px;
+  top: 10%;
+  left: 5%;
+  animation: holeFloat1 12s ease-in-out infinite;
 }
 
 .hole-2 {
-  width: 80px;
-  height: 80px;
-  top: 60%;
-  right: 15%;
-  animation: holeFloat 10s ease-in-out infinite reverse;
+  width: 100px;
+  height: 100px;
+  top: 65%;
+  right: 10%;
+  animation: holeFloat2 15s ease-in-out infinite;
 }
 
 .hole-3 {
-  width: 100px;
-  height: 100px;
-  bottom: 20%;
-  left: 20%;
-  animation: holeFloat 12s ease-in-out infinite;
+  width: 120px;
+  height: 120px;
+  bottom: 15%;
+  left: 15%;
+  animation: holeFloat3 18s ease-in-out infinite;
 }
 
-@keyframes holeFloat {
+@keyframes holeFloat1 {
   0%, 100% {
-    transform: translate(0, 0);
-    opacity: 0.6;
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
   }
   50% {
-    transform: translate(20px, -20px);
-    opacity: 0.8;
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes holeFloat2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-30px, 30px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes holeFloat3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(20px, -20px) scale(1.1);
+    opacity: 0.7;
   }
 }
 
 /* Contenedor principal */
 .main-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -278,11 +334,11 @@ body::before {
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .login-box {
-  background: rgba(15, 15, 30, 0.8);
+  background: rgba(15, 15, 30, 0.85);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(99, 102, 241, 0.3);
   border-radius: 20px;
@@ -291,6 +347,7 @@ body::before {
   max-width: 450px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: slideIn 0.5s ease;
+  text-align: center;
 }
 
 @keyframes slideIn {
@@ -305,19 +362,29 @@ body::before {
 }
 
 .login-logo {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 1.5rem;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  display: block;
 }
 
 .login-box h1 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 0.3rem;
   background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.login-box .company-name {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .login-box p {
@@ -430,18 +497,4 @@ body::before {
   .hole-1, .hole-2, .hole-3 {
     opacity: 0.3;
   }
-}
-
-/* Animación de pulso para elementos interactivos */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
 }
