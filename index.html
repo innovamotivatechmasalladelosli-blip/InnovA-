@@ -3,336 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="InnovA+ - Interfaz de Chat Avanzada con IA">
-  <meta name="theme-color" content="#6366f1">
-  <title>InnovA+ - Chat Inteligente</title>
-  <link rel="stylesheet" href="styles-improved.css">
+  <title>InnovA+ Login</title>
+  <link rel="stylesheet" href="styles-dark-lights.css">
+  <link rel="stylesheet" href="modal-styles.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="document-styles.css">
   <link rel="stylesheet" href="vr-styles.css">
   <script src="api-config.js"></script>
   <script src="gemini-api.js"></script>
+  <script src="auth-session.js"></script>
+  <script src="password-recovery.js"></script>
+  <script src="user-menu.js"></script>
 </head>
 <body>
-  <!-- Login Container -->
-  <div id="login-container" class="auth-container">
-    <div class="auth-background">
-      <div class="auth-gradient"></div>
-      <div class="auth-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
+  <!-- Huecos negros decorativos -->
+  <div class="light-hole hole-1"></div>
+  <div class="light-hole hole-2"></div>
+  <div class="light-hole hole-3"></div>
+
+  <!-- Header con menú (oculto hasta login) -->
+  <header class="header hidden" id="app-header">
+    <div class="header-logo">
+      <img src="logo.svg" alt="Logo" style="width: 40px; height: 40px;">
+      <span>InnovA+</span>
+    </div>
+    <div class="header-actions">
+      <button class="user-menu-btn" id="user-menu-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span id="user-name">Usuario</span>
+      </button>
+      
+      <!-- Menú dropdown -->
+      <div class="user-menu" id="user-menu">
+        <div class="menu-header">
+          <div class="menu-user-info">
+            <div class="menu-user-email" id="menu-email">usuario@email.com</div>
+            <div class="menu-user-status">Sesión activa</div>
+          </div>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item" data-action="session-info">
+            <div class="menu-item-icon">ℹ️</div>
+            <div class="menu-item-text">Información de Sesión</div>
+          </li>
+          <li class="menu-item" data-action="change-password">
+            <div class="menu-item-icon">🔐</div>
+            <div class="menu-item-text">Cambiar Contraseña</div>
+          </li>
+          <li class="menu-item" data-action="settings">
+            <div class="menu-item-icon">⚙️</div>
+            <div class="menu-item-text">Configuración</div>
+          </li>
+          <li class="menu-item" data-action="help">
+            <div class="menu-item-icon">❓</div>
+            <div class="menu-item-text">Ayuda</div>
+          </li>
+          <li class="menu-divider"></li>
+          <li class="menu-item danger" data-action="logout">
+            <div class="menu-item-icon">🚪</div>
+            <div class="menu-item-text">Cerrar Sesión</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <div id="login-container" class="login-container">
+      <div class="login-box">
+        <img src="logo.svg" alt="Logo" class="login-logo">
+        <h1>InnovA+</h1>
+        <form id="login-form" class="login-form" novalidate>
+          <div class="input-group">
+            <input type="email" id="email" placeholder="Correo electrónico" required autocomplete="email">
+            <div class="input-validation-message" id="email-error"></div>
+          </div>
+          <div class="input-group">
+            <input type="password" id="password" placeholder="Contraseña" required autocomplete="current-password">
+            <div class="input-validation-message" id="password-error"></div>
+          </div>
+          <button type="submit" class="login-btn" id="login-btn">Iniciar Sesión</button>
+        </form>
+        <p class="forgot-password">
+          <a href="#" id="forgot-password-link">¿Olvidaste tu contraseña?</a>
+        </p>
+        <p class="signup-text">¿No tienes cuenta? <a href="#" id="show-signup">Regístrate</a></p>
       </div>
     </div>
 
-    <div class="auth-content">
-      <!-- Login Form -->
-      <div id="login-form-container" class="auth-form-wrapper active">
-        <div class="auth-card">
-          <div class="auth-header">
-            <div class="auth-logo">
-              <img src="logo.svg" alt="InnovA+ Logo" class="logo-image">
-            </div>
-            <h1 class="auth-title">InnovA+</h1>
-            <p class="auth-subtitle">Inteligencia Artificial Avanzada</p>
+    <div id="signup-container" class="login-container hidden">
+      <div class="login-box">
+        <img src="logo.svg" alt="Logo" class="login-logo">
+        <h1>Registro</h1>
+        <form id="signup-form" class="login-form" novalidate>
+          <div class="input-group">
+            <input type="text" id="username" placeholder="Nombre de usuario" required autocomplete="username">
+            <div class="input-validation-message" id="username-error"></div>
           </div>
-
-          <form id="login-form" class="auth-form" novalidate>
-            <div class="form-group">
-              <label for="login-email" class="form-label">Correo Electrónico</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <input 
-                  type="email" 
-                  id="login-email" 
-                  class="form-input" 
-                  placeholder="tu@email.com" 
-                  required 
-                  autocomplete="email"
-                >
-              </div>
-              <span class="form-error" id="login-email-error"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="login-password" class="form-label">Contraseña</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M7 11a6 6 0 0 0-6 6v3a6 6 0 0 0 6 6h10a6 6 0 0 0 6-6v-3a6 6 0 0 0-6-6H7z"/>
-                </svg>
-                <input 
-                  type="password" 
-                  id="login-password" 
-                  class="form-input" 
-                  placeholder="••••••••" 
-                  required 
-                  autocomplete="current-password"
-                >
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-password')">
-                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </button>
-              </div>
-              <span class="form-error" id="login-password-error"></span>
-            </div>
-
-            <div class="form-group checkbox">
-              <input type="checkbox" id="remember-me" class="form-checkbox">
-              <label for="remember-me" class="checkbox-label">Recuérdame en este dispositivo</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-lg">
-              <span>Iniciar Sesión</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
-
-            <div class="form-divider">
-              <span>¿No tienes cuenta?</span>
-            </div>
-
-            <button type="button" class="btn btn-secondary btn-lg" onclick="switchToSignup()">
-              <span>Crear Cuenta</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
-            </button>
-          </form>
-
-          <div class="auth-footer">
-            <a href="#" onclick="showPasswordRecovery()" class="auth-link">¿Olvidaste tu contraseña?</a>
+          <div class="input-group">
+            <input type="email" id="signup-email" placeholder="Correo electrónico" required autocomplete="email">
+            <div class="input-validation-message" id="signup-email-error"></div>
           </div>
-        </div>
-      </div>
-
-      <!-- Signup Form -->
-      <div id="signup-form-container" class="auth-form-wrapper">
-        <div class="auth-card">
-          <div class="auth-header">
-            <div class="auth-logo">
-              <img src="logo.svg" alt="InnovA+ Logo" class="logo-image">
+          <div class="input-group">
+            <input type="password" id="signup-password" placeholder="Contraseña (mín. 8 caracteres)" required autocomplete="new-password">
+            <div class="password-strength" id="password-strength">
+              <div class="password-strength-bar"></div>
             </div>
-            <h1 class="auth-title">Crear Cuenta</h1>
-            <p class="auth-subtitle">Únete a InnovA+ hoy</p>
+            <div class="input-validation-message" id="signup-password-error"></div>
           </div>
-
-          <form id="signup-form" class="auth-form" novalidate>
-            <div class="form-group">
-              <label for="signup-username" class="form-label">Nombre de Usuario</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-                <input 
-                  type="text" 
-                  id="signup-username" 
-                  class="form-input" 
-                  placeholder="tu_usuario" 
-                  required 
-                  autocomplete="username"
-                >
-              </div>
-              <span class="form-error" id="signup-username-error"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="signup-email" class="form-label">Correo Electrónico</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <input 
-                  type="email" 
-                  id="signup-email" 
-                  class="form-input" 
-                  placeholder="tu@email.com" 
-                  required 
-                  autocomplete="email"
-                >
-              </div>
-              <span class="form-error" id="signup-email-error"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="signup-password" class="form-label">Contraseña</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M7 11a6 6 0 0 0-6 6v3a6 6 0 0 0 6 6h10a6 6 0 0 0 6-6v-3a6 6 0 0 0-6-6H7z"/>
-                </svg>
-                <input 
-                  type="password" 
-                  id="signup-password" 
-                  class="form-input" 
-                  placeholder="••••••••" 
-                  required 
-                  autocomplete="new-password"
-                  oninput="checkPasswordStrength(this.value)"
-                >
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('signup-password')">
-                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="password-strength-indicator">
-                <div class="strength-bar" id="strength-bar"></div>
-                <span class="strength-text" id="strength-text"></span>
-              </div>
-              <div class="password-requirements">
-                <div class="requirement" id="req-length">
-                  <svg class="req-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Mínimo 8 caracteres</span>
-                </div>
-                <div class="requirement" id="req-uppercase">
-                  <svg class="req-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Una mayúscula (A-Z)</span>
-                </div>
-                <div class="requirement" id="req-lowercase">
-                  <svg class="req-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Una minúscula (a-z)</span>
-                </div>
-                <div class="requirement" id="req-number">
-                  <svg class="req-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Un número (0-9)</span>
-                </div>
-                <div class="requirement" id="req-special">
-                  <svg class="req-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Un carácter especial (!@#$%)</span>
-                </div>
-              </div>
-              <span class="form-error" id="signup-password-error"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="signup-confirm-password" class="form-label">Confirmar Contraseña</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M7 11a6 6 0 0 0-6 6v3a6 6 0 0 0 6 6h10a6 6 0 0 0 6-6v-3a6 6 0 0 0-6-6H7z"/>
-                </svg>
-                <input 
-                  type="password" 
-                  id="signup-confirm-password" 
-                  class="form-input" 
-                  placeholder="••••••••" 
-                  required 
-                  autocomplete="new-password"
-                >
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('signup-confirm-password')">
-                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </button>
-              </div>
-              <span class="form-error" id="signup-confirm-password-error"></span>
-            </div>
-
-            <div class="form-group checkbox">
-              <input type="checkbox" id="terms-agree" class="form-checkbox" required>
-              <label for="terms-agree" class="checkbox-label">
-                Acepto los <a href="#" class="auth-link">Términos de Servicio</a> y la <a href="#" class="auth-link">Política de Privacidad</a>
-              </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-lg">
-              <span>Crear Cuenta</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
-
-            <div class="form-divider">
-              <span>¿Ya tienes cuenta?</span>
-            </div>
-
-            <button type="button" class="btn btn-secondary btn-lg" onclick="switchToLogin()">
-              <span>Iniciar Sesión</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Password Recovery -->
-      <div id="recovery-form-container" class="auth-form-wrapper">
-        <div class="auth-card">
-          <div class="auth-header">
-            <h1 class="auth-title">Recuperar Contraseña</h1>
-            <p class="auth-subtitle">Te ayudaremos a recuperar tu cuenta</p>
-          </div>
-
-          <form id="recovery-form" class="auth-form" novalidate>
-            <div class="form-group">
-              <label for="recovery-email" class="form-label">Correo Electrónico</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <input 
-                  type="email" 
-                  id="recovery-email" 
-                  class="form-input" 
-                  placeholder="tu@email.com" 
-                  required 
-                  autocomplete="email"
-                >
-              </div>
-              <span class="form-error" id="recovery-email-error"></span>
-            </div>
-
-            <p class="recovery-info">
-              Ingresa tu correo electrónico y te enviaremos un enlace para recuperar tu contraseña.
-            </p>
-
-            <button type="submit" class="btn btn-primary btn-lg">
-              <span>Enviar Enlace</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-            </button>
-
-            <button type="button" class="btn btn-secondary btn-lg" onclick="switchToLogin()">
-              <span>Volver al Login</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-            </button>
-          </form>
-        </div>
+          <button type="submit" class="login-btn" id="signup-btn">Registrarse</button>
+        </form>
+        <p class="signup-text">¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión</a></p>
       </div>
     </div>
-  </div>
 
-  <!-- Main Chat Application (hidden initially) -->
-  <div id="chat-container" class="chat-container hidden">
-    <!-- Chat interface will be loaded here -->
+    <!-- Chat Container -->
+    <div id="chat-container" class="chat-container hidden">
+      <!-- Chat interface will be loaded here -->
+    </div>
   </div>
 
   <!-- Scripts -->
-  <script src="auth-improved.js"></script>
-  <script src="login-ui-improved.js"></script>
   <script src="auth-handlers.js"></script>
+  <script src="menu-integration.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
