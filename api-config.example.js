@@ -1,5 +1,4 @@
 const API_CONFIG = {
-  // Configura esta clave solo en tu copia local. Nunca la subas al repositorio.
   GOOGLE_API_KEY: "TU_CLAVE_DE_GEMINI_AQUI",
   MODEL_NAME: "gemini-1.5-flash",
   ENDPOINTS: {

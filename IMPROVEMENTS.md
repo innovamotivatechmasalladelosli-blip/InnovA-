@@ -3,7 +3,7 @@
 ## 🚀 Actualización de API
 
 ### Configuración de Google Gemini
-- ✅ API Key actualizada: `AIzaSyDALO3g96nRm0gif3pup0QMf6M5DgMPwko`
+- ✅ Configuración de API separada y sin claves expuestas; usa `api-config.js` solo localmente.
 - ✅ Modelo: `gemini-1.5-flash` (optimizado para velocidad y eficiencia)
 - ✅ Endpoints configurados para Chat y Embeddings
 

@@ -16,7 +16,7 @@
 
 ```javascript
 const API_CONFIG = {
-    GOOGLE_API_KEY: "AIzaSyDALO3g96nRm0gif3pup0QMf6M5DgMPwko", // ← Reemplaza esto
+    GOOGLE_API_KEY: "TU_CLAVE_DE_GEMINI_AQUI", // ← Reemplaza esto
     MODEL_NAME: "gemini-1.5-flash",
     ENDPOINTS: {
         CHAT: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",

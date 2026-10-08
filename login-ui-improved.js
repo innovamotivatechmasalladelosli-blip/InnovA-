@@ -356,7 +356,12 @@ function showSuccessMessage(message) {
 // Mostrar interfaz de chat
 function showChatInterface() {
   document.getElementById('login-container').style.display = 'none';
+  document.getElementById('chat-container').classList.remove('hidden');
   document.getElementById('chat-container').style.display = 'block';
+  document.getElementById('app-header')?.classList.remove('hidden');
+  const userName = document.getElementById('user-name');
+  const user = window.authManager?.getCurrentUser?.();
+  if (userName && user) userName.textContent = user.username || 'Usuario';
 
   // Inicializar interfaz de chat si existe
   if (typeof ChatInterface !== 'undefined') {
