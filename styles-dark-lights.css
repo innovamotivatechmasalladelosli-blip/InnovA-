@@ -52,22 +52,10 @@ body::after {
     radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.25) 0%, transparent 40%),
     radial-gradient(circle at 70% 70%, rgba(129, 140, 248, 0.2) 0%, transparent 40%),
     radial-gradient(circle at 50% 20%, rgba(79, 70, 229, 0.2) 0%, transparent 40%);
-  animation: lightMove1 28s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 1;
   filter: blur(24px);
-  transform: translate3d(0, 0, 0) scale(1.05);
-  will-change: transform;
   contain: paint;
-}
-
-@keyframes lightMove1 {
-  0% {
-    transform: translate3d(-3%, -2%, 0) scale(1.05);
-  }
-  100% {
-    transform: translate3d(3%, 2%, 0) scale(1.1);
-  }
 }
 
 /* Huecos negros pequeños decorativos */

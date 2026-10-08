@@ -2,24 +2,29 @@
  * Manejadores de UI para el Login Mejorado
  */
 
-// Cambiar entre formularios
-function switchToLogin() {
-  document.getElementById('login-form-container').classList.add('active');
-  document.getElementById('signup-form-container').classList.remove('active');
-  document.getElementById('recovery-form-container').classList.remove('active');
+// Cambiar entre formularios sin depender de handlers inline.
+function setAuthView(view) {
+  const views = {
+    login: document.getElementById('login-form-container'),
+    signup: document.getElementById('signup-form-container'),
+    recovery: document.getElementById('recovery-form-container')
+  };
+
+  Object.entries(views).forEach(([name, element]) => {
+    if (!element) return;
+    const active = name === view;
+    element.classList.toggle('active', active);
+    element.setAttribute('aria-hidden', String(!active));
+  });
 }
 
-function switchToSignup() {
-  document.getElementById('login-form-container').classList.remove('active');
-  document.getElementById('signup-form-container').classList.add('active');
-  document.getElementById('recovery-form-container').classList.remove('active');
-}
+function switchToLogin() { setAuthView('login'); }
+function switchToSignup() { setAuthView('signup'); }
+function showPasswordRecovery() { setAuthView('recovery'); }
 
-function showPasswordRecovery() {
-  document.getElementById('login-form-container').classList.remove('active');
-  document.getElementById('signup-form-container').classList.remove('active');
-  document.getElementById('recovery-form-container').classList.add('active');
-}
+window.switchToLogin = switchToLogin;
+window.switchToSignup = switchToSignup;
+window.showPasswordRecovery = showPasswordRecovery;
 
 // Mostrar/ocultar contraseña
 function togglePasswordVisibility(inputId) {
@@ -213,6 +218,14 @@ function clearError(elementId) {
 
 // Manejar envío de formulario de login
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('show-signup')?.addEventListener('click', switchToSignup);
+  document.getElementById('show-login')?.addEventListener('click', switchToLogin);
+  document.getElementById('forgot-password-link')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    showPasswordRecovery();
+  });
+  document.getElementById('recovery-back')?.addEventListener('click', switchToLogin);
+
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', async function(e) {
